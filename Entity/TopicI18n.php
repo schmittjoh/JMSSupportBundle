@@ -17,7 +17,7 @@ class TopicI18n
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="JMS\SupportBundle\Entity\Topic")
+     * @ORM\ManyToOne(targetEntity="JMS\SupportBundle\Entity\Topic", inversedBy="translations")
      */
     private $topic;
 
@@ -48,9 +48,9 @@ class TopicI18n
         $this->answers = new ArrayCollection();
     }
 
-    public function getId()
+    public function getTopic()
     {
-        return $this->id;
+        return $this->topic;
     }
 
     public function getLocale()

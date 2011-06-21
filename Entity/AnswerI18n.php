@@ -16,7 +16,7 @@ class AnswerI18n
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="JMS\SupportBundle\Entity\Answer")
+     * @ORM\ManyToOne(targetEntity="JMS\SupportBundle\Entity\Answer", inversedBy="translations")
      */
     private $answer;
 
@@ -51,9 +51,9 @@ class AnswerI18n
         $this->createdAt = $this->updatedAt = new \DateTime;
     }
 
-    public function getId()
+    public function getAnswer()
     {
-        return $this->id;
+        return $this->answer;
     }
 
     public function getLocale()

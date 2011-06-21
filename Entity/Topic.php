@@ -27,9 +27,11 @@ class Topic
     private $answers;
 
     /**
-     * @ORM\OneToMany(targetEntity="JMS\SupportBundle\Entity\TopicI18n", mappedBy="topic", orphanRemoval=true, cascade = {"persist"})
+     * @ORM\OneToMany(targetEntity="JMS\SupportBundle\Entity\TopicI18n", mappedBy="topic", orphanRemoval=true, cascade = {"persist"}, indexBy="locale")
      */
     private $translations;
+
+    private $currentLocale;
 
     public function __construct()
     {
@@ -45,6 +47,32 @@ class Topic
     public function getAnswers()
     {
         return $this->answers;
+    }
+
+    public function getTitle()
+    {
+        if (null === $this->currentLocale) {
+            throw new \RuntimeException('The currentLocale was not set.');
+        }
+
+        $translation = $this->translations->get($this->currentLocale);
+        if (!$translation) {
+            throw new \RuntimeException(sprintf('There is no translation for locale "%s".', $this->currentLocale));
+        }
+
+        return $translation->getTitle();
+    }
+
+    public function setCurrentLocale($locale)
+    {
+        if ($this->currentLocale === $locale) {
+            return;
+        }
+
+        $this->currentLocale = $locale;
+        foreach ($this->answers as $answer) {
+            $answer->setCurrentLocale($locale);
+        }
     }
 
     public function addAnswer(Answer $answer)

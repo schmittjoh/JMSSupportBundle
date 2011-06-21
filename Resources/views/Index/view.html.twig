@@ -1,0 +1,9 @@
+{% extends "JMSSupportBundle::layout.html.twig" %}
+
+{% block body %}
+    <ul>
+    {% for topic in topics %}
+        <li><a href="{{ path("support_topic", {"id": topic.id}) }}">{{ topic.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

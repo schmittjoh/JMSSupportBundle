@@ -27,9 +27,11 @@ class Answer
     private $topic;
 
     /**
-     * @ORM\OneToMany(targetEntity="JMS\SupportBundle\Entity\TopicI18n", mappedBy="answer", orphanRemoval=true, cascade = {"persist"})
+     * @ORM\OneToMany(targetEntity="JMS\SupportBundle\Entity\TopicI18n", mappedBy="answer", orphanRemoval=true, cascade = {"persist"}, indexBy="locale")
      */
     private $translations;
+
+    private $currentLocale;
 
     public function __construct()
     {
@@ -46,6 +48,34 @@ class Answer
         return $this->topic;
     }
 
+    public function getTitle()
+    {
+        if (null === $this->currentLocale) {
+            throw new \RuntimeException('The currentLocale was not set.');
+        }
+
+        $translation = $this->translations->get($this->currentLocale);
+        if (!$translation) {
+            throw new \RuntimeException(sprintf('There is no translation for locale "%s".', $this->currentLocale));
+        }
+
+        return $translation->getTitle();
+    }
+
+    public function getText()
+    {
+        if (null === $this->currentLocale) {
+            throw new \RuntimeException('The currentLocale was not set.');
+        }
+
+        $translation = $this->translations->get($this->currentLocale);
+        if (!$translation) {
+            throw new \RuntimeException(sprintf('There is no translation for locale "%s".', $this->currentLocale));
+        }
+
+        return $translation->getText();
+    }
+
     public function getTranslations()
     {
         return $this->translations;
@@ -57,6 +87,16 @@ class Answer
             throw new \RuntimeException('This answer is already linked to a topic.');
         }
         $this->topic = $topic;
+    }
+
+    public function setCurrentLocale($locale)
+    {
+        if ($this->currentLocale === $locale) {
+            return;
+        }
+
+        $this->currentLocale = $locale;
+        $this->topic->setCurrentLocale($locale);
     }
 
     public function addTranslation(AnswerI18n $translation)

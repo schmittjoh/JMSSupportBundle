@@ -1,0 +1,16 @@
+{% extends "JMSSupportBundle::layout.html.twig" %}
+
+{% block body %}
+
+    <ol>
+        <li>Index</li>
+        <li>{{ topic.title }}</li>
+    </ol>
+    
+    <ul>
+    {% for answer in topic.answers %}
+        <li><a href="{{ path("support_answer", {"id": answer.id}) }}">{{ answer.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
