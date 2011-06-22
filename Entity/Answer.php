@@ -27,7 +27,7 @@ class Answer
     private $topic;
 
     /**
-     * @ORM\OneToMany(targetEntity="JMS\SupportBundle\Entity\TopicI18n", mappedBy="answer", orphanRemoval=true, cascade = {"persist"}, indexBy="locale")
+     * @ORM\OneToMany(targetEntity="JMS\SupportBundle\Entity\AnswerI18n", mappedBy="answer", orphanRemoval=true, cascade = {"persist"}, indexBy="locale")
      */
     private $translations;
 
