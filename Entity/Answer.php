@@ -22,7 +22,7 @@ class Answer
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="JMS\SupportBundle\Entity\Topic")
+     * @ORM\ManyToOne(targetEntity="JMS\SupportBundle\Entity\Topic", inversedBy="answers")
      */
     private $topic;
 
